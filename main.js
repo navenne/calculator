@@ -3,7 +3,7 @@
  */
 
 {
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {  
     const createButton = function (text) {
       const element = document.createElement("button");
       const content = document.createTextNode(text);
@@ -13,8 +13,12 @@
       return element;
     };
 
-    const createDiv = function (...buttons) {
+    const createDiv = function (...buttonsText) {
       const element = document.createElement("div");
+      const buttons = [];
+      buttonsText.forEach((e) => {
+        buttons.push(createButton(e));
+      });
       appendChildren(element, ...buttons);
       element.style.display = "flex";
       element.style.justifyContent = "space-between";
@@ -29,39 +33,14 @@
 
     const div = document.createElement("div");
     const div1 = document.createElement("div");
-    const div2 = createDiv(
-      createButton("CE"),
-      createButton("←"),
-      createButton("%"),
-      createButton("+")
-    );
-    const div3 = createDiv(
-      createButton("7"),
-      createButton("8"),
-      createButton("9"),
-      createButton("-")
-    );
-    const div4 = createDiv(
-      createButton("4"),
-      createButton("5"),
-      createButton("6"),
-      createButton("x")
-    );
-    const div5 = createDiv(
-      createButton("1"),
-      createButton("2"),
-      createButton("3"),
-      createButton("÷")
-    );
-
-    const div6 = createDiv(
-      createButton("0"),
-      createButton("±"),
-      createButton(","),
-      createButton("=")
-    );
+    const div2 = createDiv("CE", "←", "%", "+");
+    const div3 = createDiv("7", "8", "9", "-");
+    const div4 = createDiv("4", "5", "6", "x");
+    const div5 = createDiv("1", "2", "3", "÷");
+    const div6 = createDiv("0", "±", ",", "=");
 
     div1.appendChild(document.createElement("input"));
+
     div.style.maxWidth = "200px";
     div.style.textAlign = "center";
     div.style.backgroundColor = "#F0F0C6";
