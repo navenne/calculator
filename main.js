@@ -4,7 +4,6 @@
 
 {
   document.addEventListener("DOMContentLoaded", function () {
-
     /**
      * Crea un botón
      * @param {string} text texto del botón
@@ -92,11 +91,34 @@
         this.display.style.textAlign = "right";
         this.display.value = 0;
 
-        // Cuando se hace click en el botón de la coma, se comprueba si ya hay un punto decimal en el display, para añadirlo o no
-        this.keypad.get(",").addEventListener("click", function () {
-          calc.display.value = calc.display.value.includes(".") ? calc.display.value : calc.display.value + ".";
+        // Limpia display
+        this.keypad.get("CE").addEventListener("click", function () {
+          calc.display.value = "0";
         });
-      }
+
+        // Borra un dígito. Si es el último, aparece un cero
+        this.keypad.get("←").addEventListener("click", function () {
+          calc.display.value =
+            calc.display.value.length == 1
+              ? "0"
+              : calc.display.value.slice(0, calc.display.value.length - 1);
+        });
+
+        // Comprueba si ya hay un punto decimal en el display, para añadirlo o no
+        this.keypad.get(",").addEventListener("click", function () {
+          calc.display.value = calc.display.value.includes(".")
+            ? calc.display.value
+            : calc.display.value + ".";
+        });
+
+        // Comprueba si el valor del display es 0, para añadirlo o no, así solo puede haber un cero antes de un punto decimal
+        this.keypad.get("0").addEventListener("click", function () {
+          calc.display.value =
+            calc.display.value == "0"
+              ? calc.display.value
+              : calc.display.value + "0";
+        });
+      },
     };
 
     calc.init();
