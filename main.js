@@ -21,13 +21,13 @@
 
     /**
      * Crea la botonera
-     * @param  {...any} buttons texto de los botones
-     * @returns keypad, array de botones
+     * @param  {...string} buttons texto de los botones
+     * @returns keypad, mapa de botones
      */
     const createKeypad = function (...buttons) {
-      const keypad = [];
-      buttons.forEach((e) => {
-        keypad.push(createButton(e));
+      const keypad = new Map();
+      buttons.forEach((text) => {
+        keypad.set(text, createButton(text));
       });
       return keypad;
     };
@@ -83,15 +83,20 @@
           divKeypad.appendChild(e);
         });
 
-
+        // Añadir los divs al div padre y este último al body
         div.appendChild(divDisplay);
         div.appendChild(divKeypad);
-
         document.body.appendChild(div);
 
+        // Mostrar 0 al inicializar la calculadora
         this.display.style.textAlign = "right";
         this.display.value = 0;
-      },
+
+        // Cuando se hace click en el botón de la coma, se comprueba si ya hay un punto decimal en el display, para añadirlo o no
+        this.keypad.get(",").addEventListener("click", function () {
+          calc.display.value = calc.display.value.includes(".") ? calc.display.value : calc.display.value + ".";
+        });
+      }
     };
 
     calc.init();
