@@ -3,51 +3,97 @@
  */
 
 {
-  document.addEventListener("DOMContentLoaded", function () {  
+  document.addEventListener("DOMContentLoaded", function () {
+
+    /**
+     * Crea un botón
+     * @param {string} text texto del botón
+     * @returns button, el botón creado
+     */
     const createButton = function (text) {
-      const element = document.createElement("button");
+      const button = document.createElement("button");
       const content = document.createTextNode(text);
-      element.appendChild(content);
-      element.style.width = "100%";
-      element.style.margin = "5px";
-      return element;
+      button.appendChild(content);
+      button.style.width = "100%";
+      button.style.margin = "5px";
+      return button;
     };
 
-    const createDiv = function (...buttonsText) {
-      const element = document.createElement("div");
-      const buttons = [];
-      buttonsText.forEach((e) => {
-        buttons.push(createButton(e));
+    /**
+     * Crea la botonera
+     * @param  {...any} buttons texto de los botones
+     * @returns keypad, array de botones
+     */
+    const createKeypad = function (...buttons) {
+      const keypad = [];
+      buttons.forEach((e) => {
+        keypad.push(createButton(e));
       });
-      appendChildren(element, ...buttons);
-      element.style.display = "flex";
-      element.style.justifyContent = "space-between";
-      return element;
+      return keypad;
     };
 
-    const appendChildren = function (parent, ...children) {
-      children.forEach((e) => {
-        parent.appendChild(e);
-      });
+    const calc = {
+      display: document.createElement("input"),
+
+      keypad: createKeypad(
+        "CE",
+        "←",
+        "%",
+        "+",
+        "7",
+        "8",
+        "9",
+        "-",
+        "4",
+        "5",
+        "6",
+        "x",
+        "1",
+        "2",
+        "3",
+        "÷",
+        "0",
+        "±",
+        ",",
+        "="
+      ),
+
+      init() {
+        // Creo div padre
+        const div = document.createElement("div");
+        div.style.maxWidth = "200px";
+        div.style.textAlign = "center";
+        div.style.backgroundColor = "#F0F0C6";
+        div.style.padding = "5px";
+
+        // Creo display
+        const divDisplay = document.createElement("div");
+        divDisplay.appendChild(this.display);
+
+        // Creo botonera
+        const divKeypad = document.createElement("div");
+        divKeypad.style.display = "grid";
+        divKeypad.style.gridTemplateColumns = "repeat(4, 1fr)";
+        divKeypad.style.columnGap = "5px";
+        divKeypad.style.justifyContent = "space-evenly";
+        divKeypad.style.justifyItems = "center";
+
+        // Añado cada botón del array keypad al div de la botonera
+        this.keypad.forEach((e) => {
+          divKeypad.appendChild(e);
+        });
+
+
+        div.appendChild(divDisplay);
+        div.appendChild(divKeypad);
+
+        document.body.appendChild(div);
+
+        this.display.style.textAlign = "right";
+        this.display.value = 0;
+      },
     };
 
-    const div = document.createElement("div");
-    const div1 = document.createElement("div");
-    const div2 = createDiv("CE", "←", "%", "+");
-    const div3 = createDiv("7", "8", "9", "-");
-    const div4 = createDiv("4", "5", "6", "x");
-    const div5 = createDiv("1", "2", "3", "÷");
-    const div6 = createDiv("0", "±", ",", "=");
-
-    div1.appendChild(document.createElement("input"));
-
-    div.style.maxWidth = "200px";
-    div.style.textAlign = "center";
-    div.style.backgroundColor = "#F0F0C6";
-    div.style.padding = "5px";
-
-    appendChildren(div, div1, div2, div3, div4, div5, div6);
-
-    document.body.appendChild(div);
+    calc.init();
   });
 }
