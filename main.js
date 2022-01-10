@@ -104,20 +104,28 @@
               : calc.display.value.slice(0, calc.display.value.length - 1);
         });
 
-        // Comprueba si ya hay un punto decimal en el display, para añadirlo o no
         this.keypad.get(",").addEventListener("click", function () {
+        // Comprueba si ya hay un punto decimal en el display, para añadirlo o no
           calc.display.value = calc.display.value.includes(".")
             ? calc.display.value
             : calc.display.value + ".";
         });
 
-        // Comprueba si el valor del display es 0, para añadirlo o no, así solo puede haber un cero antes de un punto decimal
+        // Comprueba si el valor del display es 0, para añadirlo o no. Así solo puede haber un cero antes de un punto decimal
         this.keypad.get("0").addEventListener("click", function () {
           calc.display.value =
             calc.display.value == "0"
               ? calc.display.value
               : calc.display.value + "0";
         });
+
+        // Botones del 1 al 9
+        for (let i = 1; i <= 9; i++) {
+          this.keypad.get(i.toString()).addEventListener("click", function () {
+            calc.display.value = calc.display.value == 0 ? i : calc.display.value + i;
+          });
+        };
+
       },
     };
 
