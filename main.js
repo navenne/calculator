@@ -77,7 +77,7 @@
         divKeypad.style.justifyContent = "space-evenly";
         divKeypad.style.justifyItems = "center";
 
-        // Añado cada botón del array keypad al div de la botonera
+        // Añado cada botón del mapa keypad al div de la botonera
         this.keypad.forEach((e) => {
           divKeypad.appendChild(e);
         });
@@ -90,45 +90,79 @@
         // Mostrar 0 al inicializar la calculadora
         this.display.style.textAlign = "right";
         this.display.value = 0;
+      },
 
+      addBehaviour() {
         // Limpia display
-        this.keypad.get("CE").addEventListener("click", function () {
-          calc.display.value = "0";
-        });
+        const reset = () =>
+          this.keypad
+            .get("CE")
+            .addEventListener("click", () => (calc.display.value = "0"));
 
         // Borra un dígito. Si es el último, aparece un cero
-        this.keypad.get("←").addEventListener("click", function () {
-          calc.display.value =
-            calc.display.value.length == 1
-              ? "0"
-              : calc.display.value.slice(0, calc.display.value.length - 1);
-        });
+        const deleteDigit = () =>
+          this.keypad
+            .get("←")
+            .addEventListener(
+              "click",
+              () =>
+                (calc.display.value =
+                  calc.display.value.length == 1
+                    ? "0"
+                    : calc.display.value.slice(
+                        0,
+                        calc.display.value.length - 1
+                      ))
+            );
 
-        this.keypad.get(",").addEventListener("click", function () {
         // Comprueba si ya hay un punto decimal en el display, para añadirlo o no
-          calc.display.value = calc.display.value.includes(".")
-            ? calc.display.value
-            : calc.display.value + ".";
-        });
+        const addComma = () =>
+          this.keypad
+            .get(",")
+            .addEventListener(
+              "click",
+              () =>
+                (calc.display.value = calc.display.value.includes(".")
+                  ? calc.display.value
+                  : calc.display.value + ".")
+            );
 
         // Comprueba si el valor del display es 0, para añadirlo o no. Así solo puede haber un cero antes de un punto decimal
-        this.keypad.get("0").addEventListener("click", function () {
-          calc.display.value =
-            calc.display.value == "0"
-              ? calc.display.value
-              : calc.display.value + "0";
-        });
+        const zero = () =>
+          this.keypad
+            .get("0")
+            .addEventListener(
+              "click",
+              () =>
+                (calc.display.value =
+                  calc.display.value == "0"
+                    ? calc.display.value
+                    : calc.display.value + "0")
+            );
 
         // Botones del 1 al 9
-        for (let i = 1; i <= 9; i++) {
-          this.keypad.get(i.toString()).addEventListener("click", function () {
-            calc.display.value = calc.display.value == 0 ? i : calc.display.value + i;
-          });
-        };
+        const numbersOneToNine = () =>
+          Array(1, 2, 3, 4, 5, 6, 7, 8, 9).forEach((number) =>
+            this.keypad
+              .get(number.toString())
+              .addEventListener(
+                "click",
+                () =>
+                  (calc.display.value =
+                    calc.display.value == "0" ? number : calc.display.value + number)
+              )
+          );
 
+
+        reset();
+        deleteDigit();
+        addComma();
+        zero();
+        numbersOneToNine();
       },
     };
 
     calc.init();
+    calc.addBehaviour();
   });
 }
