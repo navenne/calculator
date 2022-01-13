@@ -92,77 +92,46 @@
         this.display.value = 0;
       },
 
-      addBehaviour() {
-        // Limpia display
-        const reset = () =>
-          this.keypad
-            .get("CE")
-            .addEventListener("click", () => (calc.display.value = "0"));
-
-        // Borra un dígito. Si es el último, aparece un cero
-        const deleteDigit = () =>
-          this.keypad
-            .get("←")
-            .addEventListener(
-              "click",
-              () =>
-                (calc.display.value =
-                  calc.display.value.length == 1
-                    ? "0"
-                    : calc.display.value.slice(
-                        0,
-                        calc.display.value.length - 1
-                      ))
-            );
-
-        // Comprueba si ya hay un punto decimal en el display, para añadirlo o no
-        const addComma = () =>
-          this.keypad
-            .get(",")
-            .addEventListener(
-              "click",
-              () =>
-                (calc.display.value = calc.display.value.includes(".")
-                  ? calc.display.value
-                  : calc.display.value + ".")
-            );
-
-        // Comprueba si el valor del display es 0, para añadirlo o no. Así solo puede haber un cero antes de un punto decimal
-        const zero = () =>
-          this.keypad
-            .get("0")
-            .addEventListener(
-              "click",
-              () =>
-                (calc.display.value =
-                  calc.display.value == "0"
-                    ? calc.display.value
-                    : calc.display.value + "0")
-            );
-
-        // Botones del 1 al 9
-        const numbersOneToNine = () =>
-          Array(1, 2, 3, 4, 5, 6, 7, 8, 9).forEach((number) =>
-            this.keypad
-              .get(number.toString())
-              .addEventListener(
-                "click",
-                () =>
-                  (calc.display.value =
-                    calc.display.value == "0" ? number : calc.display.value + number)
-              )
-          );
-
-
-        reset();
-        deleteDigit();
-        addComma();
-        zero();
-        numbersOneToNine();
+      addBehaviour(button) {
+        switch (button) {
+          case "CE": // Limpia display
+            return () => (this.display.value = "0");
+          case "←": // Borra un dígito. Si es el último, aparece un cero
+            return () =>
+            (this.display.value =
+              this.display.value.length == 1
+                ? "0"
+                : this.display.value.slice(
+                    0,
+                    this.display.value.length - 1
+                  ));
+          case ",": // Comprueba si ya hay un punto decimal en el display, para añadirlo o no
+            return () =>
+            (this.display.value = this.display.value.includes(".")
+              ? this.display.value
+              : this.display.value + ".");
+          case "0": // Comprueba si el valor del display es 0, para añadirlo o no. Así solo puede haber un cero antes de un punto decimal
+            return () =>
+            (this.display.value =
+              this.display.value == "0"
+                ? this.display.value
+                : this.display.value + "0");
+          case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9": // Botones del 1 al 9
+            return () =>
+            (this.display.value =
+              this.display.value == "0" ? button : this.display.value + button);
+          case "±":
+            return () =>
+            (this.display.value = this.display.value != "0" ? (this.display.value.startsWith("-") ? this.display.value.substring(1, this.display.value.length) : `-${this.display.value}`) : this.display.value);
+          default:
+            break;
+        }
       },
     };
 
     calc.init();
-    calc.addBehaviour();
+    Array.from(calc.keypad.keys()).forEach((button => {
+      calc.keypad.get(button).addEventListener("click", calc.addBehaviour(button));
+    }));
   });
 }
