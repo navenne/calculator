@@ -12,8 +12,6 @@
       const button = document.createElement("button");
       const content = document.createTextNode(text);
       button.appendChild(content);
-      button.style.width = "100%";
-      button.style.margin = "5px";
       button.addEventListener("click", calc.addBehaviour(text));
       return button;
     },
@@ -21,10 +19,6 @@
     init() {
       // Creo div padre
       const div = document.createElement("div");
-      div.style.maxWidth = "200px";
-      div.style.textAlign = "center";
-      div.style.backgroundColor = "#F0F0C6";
-      div.style.padding = "5px";
 
       // Creo display
       calc.display = document.createElement("input");
@@ -55,11 +49,6 @@
         "="
       );
       const divKeypad = document.createElement("div");
-      divKeypad.style.display = "grid";
-      divKeypad.style.gridTemplateColumns = "repeat(4, 1fr)";
-      divKeypad.style.columnGap = "5px";
-      divKeypad.style.justifyContent = "space-evenly";
-      divKeypad.style.justifyItems = "center";
 
       // Añado cada botón del array keypad al div de la botonera
       this.keypad.forEach((buttonText) => {
